@@ -20,8 +20,9 @@ main() {
     fi
 
     sudo apt update
-    sudo apt install -y wget unzip openjdk-17-jdk -y
+    sudo apt install -y make wget unzip openjdk-17-jdk -y
 
+    # Instala SonarQube
     wget -O "$SONAR_ZIP" "$SONAR_URL"
     unzip -q "$SONAR_ZIP" -d /opt/
     mv "/opt/sonarqube-${SONAR_VERSION}" "$SONAR_HOME"
@@ -51,6 +52,27 @@ SuccessExitStatus=143
 [Install]
 WantedBy=multi-user.target
 EOT
+
+    # Instala SonarScanner
+    wget -O "$SONAR_SCANNER_ZIP" "$SONAR_SCANNER_URL"
+    unzip -q "$SONAR_SCANNER_ZIP" -d /opt/
+    mv "/opt/sonar-scanner-${SONAR_SCANNER_VERSION}" "$SONAR_SCANNER_HOME"
+    rm "$SONAR_SCANNER_ZIP"
+    chown -R "$SONAR_USER:$SONAR_GROUP" "$SONAR_SCANNER_HOME"
+    echo 'export PATH=$PATH:/opt/sonar-scanner-cli/bin' | sudo tee -a /etc/profile
+
+    # Download and install n and Node.js:
+    curl -fsSL https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | sudo -E bash -
+    sudo apt install -y nodejs
+
+    # Node.js already installs during n-install, mas pode instalar manualmente:
+    #   n install 22
+
+    # Verifica versão do Node.js:
+    node -v # Deve mostrar "v22.18.0".
+
+    # Verifica versão do npm:
+    npm -v # Deve mostrar "10.9.3".
 
     systemctl daemon-reload
     systemctl enable sonarqube

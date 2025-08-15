@@ -62,7 +62,7 @@ EOT
     echo 'export PATH=$PATH:/opt/sonar-scanner-cli/bin' | sudo tee -a /etc/profile
 
     # Download and install n and Node.js:
-    curl -fsSL https://raw.githubusercontent.com/mklement0/n-install/stable/bin/n-install | sudo -E bash -
+    curl -fsSL https://deb.nodesource.com/setup_22.x | sudo -E bash -
     sudo apt install -y nodejs
 
     # Node.js already installs during n-install, mas pode instalar manualmente:

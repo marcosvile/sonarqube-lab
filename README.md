@@ -75,6 +75,35 @@ vagrant plugin install vagrant-vbguest
      vagrant ssh
      ```
 
+## Testando manualmente o SonarScanner
+
+Crie o projeto no SonarQube e obtenha o token de autenticação. Em seguida, você pode testar o SonarScanner manualmente dentro da VM provisionada.
+
+### Passos:
+
+1. Acesse a VM provisionada:
+   ```bash
+   vagrant ssh
+   ```
+
+2. Navegue até o diretório do projeto:
+   ```bash
+   cd /vagrant/node-app
+   ```
+
+3. Execute o SonarScanner (usando o token e configurações do seu `.env`):
+   ```bash
+   /opt/sonar-scanner-cli/bin/sonar-scanner \
+     -Dsonar.projectKey=redis-app \
+     -Dsonar.sources=. \
+     -Dsonar.host.url=http://localhost:9000 \
+     -Dsonar.token=<seu_token>
+   ```
+
+Substitua `<seu_token>` pelo valor do seu token SonarQube.
+
+Se tudo estiver correto, o scanner irá analisar o código e enviar os resultados para o SonarQube, que podem ser visualizados na interface web.
+
 ## Solução de problemas
 - Certifique-se de que o arquivo `.env` está presente e corretamente configurado.
 - Se o SonarQube não iniciar, verifique o status do serviço dentro da VM:
